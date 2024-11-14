@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Finance Management System</title>
+
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Navigation Bar Styling */
+        nav {
+            background: linear-gradient(to right, #87CEEB, #0000FF);
+            padding: 15px;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: 1000;
+        }
+
+        .logo img {
+            height: 40px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            display: block;
+            color: black;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+            margin-right:15px ;
+            font-size: large;
+        }
+
+        nav ul li a:hover {
+            color:rgba(255, 0, 0, 0.629);
+        }
+
+        /* Section1 (Background with Overlay and Content) */
+        .bgimg {
+            background-image: url(" {% static 'ExpenseTracker/photos/prjct.jpg' %} ");
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 0;
+        }
+
+        /* Overlay for section1 */
+        .overlay {
+            position: absolute;
+            background-color: rgba(149, 144, 113, 0.8); /* Slight transparency */
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+        }
+
+        /* Content within section1 */
+        .content {
+            position: relative;
+            z-index: 2;
+            color: white;
+            text-align: center;
+            max-width: 800px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1.5s ease-in-out 0.5s forwards;
+        }
+
+        /* Heading Animation */
+        .heading {
+            font-size: 35px;
+            opacity: 0;
+            transform: translateY(-20px);
+            animation: fadeInDown 1.5s ease-in-out 0.7s forwards;
+        }
+
+        /* Tagline Animation */
+        .tagline {
+            font-size: 1.5rem;
+            margin-top: 10px;
+            opacity: 0;
+            animation: fadeInUp 1.5s ease-in-out 1s forwards;
+        }
+
+        /* Paragraph Animation */
+        .para {
+            font-size: 1.25rem;
+            margin-top: 15px;
+            padding-left: 100px;
+            padding-right: 100px;
+            opacity: 0;
+            animation: fadeInUp 1.5s ease-in-out 1.2s forwards;
+        }
+
+        /* Buttons with hover effect */
+        .buttons {
+            margin-top: 25px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            opacity: 0;
+            animation: fadeInUp 1.5s ease-in-out 1.4s forwards;
+        }
+
+        .RMbutton, .JNbutton {
+            padding: 10px 20px;
+            font-size: 20px;
+            border: 2px solid;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+        }
+
+        .RMbutton {
+           background: linear-gradient(to right, #87CEEB, #0000FF);
+            color: black;
+            border-color:linear-gradient(to right, #87CEEB, #0000FF);
+        }
+
+        .RMbutton:hover {
+            background-color: transparent;
+            color: linear-gradient(to right, #87CEEB, #0000FF);
+            transform: scale(1.05);
+        }
+
+        .JNbutton {
+            background-color: white;
+            color: black;
+            border-color: white;
+        }
+
+        .JNbutton:hover {
+            background-color: transparent;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* Key Features Section */
+        .section {
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .section h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .section p {
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+
+        .features, .benefits {
+            background-color: #f4f4f4;
+        }
+
+        .feature, .benefit {
+            display: inline-block;
+            width: 30%;
+            margin: 10px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+
+        .feature img, .benefit img {
+            width: 100%;
+            height: 300px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .feature, .benefit {
+                width: 100%;
+                box-sizing: border-box;
+            }
+        }
+
+
+        /* Animations */
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* About Us */
+        #personal-finance-management {
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+        }
+
+        #personal-finance-management h2, h3 {
+            color: linear-gradient(to right, #87CEEB, #0000FF);
+            text-align: center;
+        }
+
+        #personal-finance-management h2 {
+            font-size: 36px;
+        }
+
+        #personal-finance-management h3 {
+            font-size: 28px;
+            margin-top: 40px;
+        }
+
+        #personal-finance-management p, ul {
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        #personal-finance-management ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+
+        /* Center Images */
+        .center-img {
+            display: block;
+            margin: 20px auto;
+        }
+
+
+        /* ContactUs */
+        .contact-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .contact-container h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .contact-container p {
+            text-align: center;
+            color: #7f8c8d;
+        }
+        .contact-option {
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 30px;
+            background-color: #f4f4f4;
+            border-radius: 8px;
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+        }
+        .contact-option h3 {
+            color: black;
+            margin-bottom: 10px;
+        }
+        .contact-option p {
+            color: #34495e;
+        }
+        .contact-option a {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: linear-gradient(to right, #87CEEB, #0000FF);
+            color: black;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .contact-option a:hover {
+            background-color: blue;
+        }
+
+        /* Footer */
+        footer {
+            background-color: linear-gradient(to right, #87CEEB, #0000FF);
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+        footer p {
+            margin: 0;
+            color: black;
+        }
+        footer a {
+            color: black;
+            text-decoration: none;
+        }
+        footer a:hover {
+            color: black;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="logo">
+            <a href="#">
+                <img src="https://static.vecteezy.com/system/resources/previews/004/999/033/original/accountant-management-finance-logo-free-vector.jpg" alt="Logo"
+     style="height: 50px; width: 70px; padding: 10px; border-radius: 50%; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);">
+
+            </a>
+        </div>
+
+        <ul>
+            <li><a href="#"><b>Home</b></a></li>
+            <li><a href="#personal-finance-management"><b>About Us</b></a></li>
+            <li><a href="#mycontact"><b>Contact Us</b></a></li>
+            <li><a href="/login"><b>Login</b></a></li>
+
+        </ul>
+    </nav>
+
+    <!-- Section1: Background with Overlay and Text Content -->
+    <div class="bgimg">
+        <div class="overlay"></div>
+        <div class="content">
+            <div class="heading">
+                <h1 class="open-sans-regular">
+                    Welcome to the Personal Finance Management System
+                </h1>
+            </div>
+            <div class="tagline">
+                <p>Track your expenses, manage your budget, and take control of your financial future.</p>
+            </div>
+            <div class="buttons">
+                <a href="#personal-finance-management"><button class="RMbutton">Read More</button></a>
+
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Key Features Section -->
+    <div class="section features" id="key">
+        <h2>Key Features</h2>
+        <div class="feature">
+            <h3>Expense Tracking</h3>
+            <img src="https://www.freshbooks.com/wp-content/uploads/2022/02/expense-tracking.jpg" alt="Expense Tracking">
+            <p>Track your daily expenses with ease and get detailed reports on your spending habits.</p>
+        </div>
+        <div class="feature">
+            <h3>Budget Management</h3>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNKCcBQC5l0tM0ETFiCywTuxZZAgLQon36fQ&s" alt="Budget Management">
+            <p>Set up budgets and monitor your progress to ensure you stay within your financial limits.</p>
+        </div>
+        <div class="feature">
+            <h3>Financial Reports</h3>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcea7OWOZNjoCz4fgKyM03y0oyrC3fzalkhg&s" alt="Financial Reports">
+            <p>Generate financial reports to analyze your financial health and make informed decisions.</p>
+        </div>
+    </div>
+
+    <!-- About Us Section -->
+
+    <section id="personal-finance-management">
+        <h2 >About Us</h2>
+        <h2>What is Personal Finance Management?</h2>
+        <img src="https://www.freshbooks.com/wp-content/uploads/2022/03/financial-reporting.jpg" alt="Finance Management" class="center-img" style="height: 300px; width: 500px;">
+        <p>
+            Personal finance management is the process of overseeing and organizing your financial activities, such as income generation, saving, budgeting, investing, and protecting your financial future. It encompasses all financial decisions and actions that individuals and households make to improve their financial health and achieve financial stability. Whether you are trying to save for a vacation, pay off debt, or invest for retirement, personal finance management helps you create a roadmap for success.
+        </p>
+
+        <h3>Key Components of Personal Finance Management</h3>
+        <img src="https://img.freepik.com/free-vector/financial-management-isometric-composition-with-3d-budget-planning-money-symbols-dark-background-vector-illustration_1284-73166.jpg" alt="Finance Management" class="center-img" style="height: 300px; width: 500px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);">
+        <p>
+            Effective personal finance management is composed of several key components that work together to provide a holistic approach to managing money. Understanding each of these components is critical to creating a strong financial plan.
+        </p>
+
+        <ul>
+            <li><strong>Income:</strong> Your income is the foundation of personal finance. It includes all sources of cash inflow, such as your salary, wages, freelance work, or business profits. Managing personal finances effectively begins with understanding how much money is coming in and how it can be best allocated to meet financial goals.</li>
+            <li><strong>Budgeting:</strong> Budgeting is one of the most critical components of personal finance management. It involves creating a plan for how to spend and save money based on your income. A well-organized budget ensures that you allocate your income towards necessary expenses, savings, and debt repayments without overspending.</li>
+            <li><strong>Saving:</strong> Savings form the bedrock of financial stability. Setting aside a portion of your income for savings helps prepare for unexpected emergencies and long-term goals like buying a house, retirement, or a major purchase. An emergency fund can help cover unexpected expenses like medical emergencies, job loss, or urgent home repairs.</li>
+            <li><strong>Debt Management:</strong> Debt can be a financial burden if not managed carefully. Managing your debt involves creating a plan to pay off loans, credit card balances, and other financial obligations in a timely manner. Strategies like prioritizing high-interest debt and consolidating loans can help in faster debt reduction.</li>
+            <li><strong>Investing:</strong> Investing allows your money to grow over time and helps in achieving long-term financial goals, such as retirement or higher education. Whether through stocks, bonds, mutual funds, or real estate, investing strategically allows individuals to build wealth by earning a return on their money.</li>
+            <li><strong>Insurance:</strong> Protecting your financial health involves having the right insurance policies in place. Insurance provides a safety net in case of unforeseen events like accidents, illnesses, or natural disasters. It is essential to ensure that you and your family are adequately covered with life, health, property, and disability insurance.</li>
+            <li><strong>Retirement Planning:</strong> Planning for retirement is an essential aspect of personal finance management. Ensuring that you have enough savings and investments to maintain your desired lifestyle post-retirement requires early planning and a disciplined savings approach.</li>
+            <li><strong>Tax Planning:</strong> Tax planning ensures that you are taking advantage of available deductions and credits, thus minimizing your tax liability. Efficient tax planning helps save money and optimize your after-tax income.</li>
+        </ul>
+
+
+        <h3>Why is Personal Finance Management Important?</h3>
+        <p>
+            Personal finance management is crucial because it helps individuals maintain control over their finances, which in turn reduces stress and anxiety about money. It provides a clear understanding of where money is going and helps avoid financial pitfalls such as debt accumulation, overspending, or insufficient savings. Good financial management also prepares individuals for future goals, whether it's buying a home, saving for a child’s education, or retiring comfortably. Additionally, sound finance management ensures that you are prepared for emergencies and can recover from unexpected financial setbacks.
+        </p>
+
+        <h3>Tips for Effective Personal Finance Management</h3>
+        <p>
+            Managing personal finances effectively is not always easy, but by following a few key strategies, anyone can improve their financial health:
+        </p>
+
+        <ul>
+            <li><strong>Create a Budget:</strong> Track your income and expenses monthly. Stick to your budget and adjust it as necessary to accommodate changes in your financial situation.</li>
+            <li><strong>Build an Emergency Fund:</strong> Save at least 3-6 months' worth of living expenses in a separate emergency fund to prepare for unexpected events.</li>
+            <li><strong>Pay Off High-Interest Debt:</strong> Focus on paying off debt with high interest rates, such as credit card balances, to reduce the financial burden.</li>
+            <li><strong>Save for Retirement:</strong> Start saving for retirement as early as possible to take advantage of compound interest. Use tax-advantaged retirement accounts like 401(k)s or IRAs.</li>
+            <li><strong>Invest Wisely:</strong> Diversify your investments to spread risk and build wealth over time. Consider consulting with a financial advisor to determine the best investment strategy for your goals.</li>
+            <li><strong>Review Insurance Coverage:</strong> Ensure you have adequate life, health, and property insurance to protect your finances in case of emergencies.</li>
+            <li><strong>Monitor Credit Score:</strong> Regularly review your credit score and report to ensure there are no errors and that your credit remains healthy.</li>
+            <li><strong>Stay Educated:</strong> Continuously educate yourself about personal finance, tax laws, and investment opportunities. The more knowledgeable you are, the better financial decisions you can make.</li>
+        </ul>
+
+        <h3>The Future of Personal Finance Management</h3>
+        <img src="https://happay.com/blog/wp-content/uploads/sites/12/2023/10/financial-management.webp" alt="Finance Management" class="center-img" style="height: 300px; width: 500px;">
+        <p>
+            The future of personal finance management lies in leveraging technology to simplify financial decision-making. Tools like budgeting apps, financial planning software, and AI-driven investment platforms are revolutionizing how individuals manage their money. Automation, machine learning, and data analytics are helping people track their spending habits, make smarter investments, and plan for their future with more confidence. The goal is to make personal finance management more accessible, less time-consuming, and more effective, allowing individuals to focus on their long-term financial well-being.
+        </p>
+
+        <p>
+            At Personal Finance Management System, we are committed to helping you harness the power of technology to manage your finances with ease. Our platform is designed to simplify budgeting, track expenses, set financial goals, and provide personalized insights to help you achieve financial success. Together, we can help you build a secure financial future.
+        </p>
+    </section>
+
+
+    <!-- Benefits Section -->
+    <div class="section benefits">
+
+            <h2>Benefits</h2>
+            <div class="benefit">
+                <h3>Easy to Use</h3>
+                <img src="https://www.shutterstock.com/image-vector/easy-use-vector-illustration-260nw-2095100362.jpg" alt="Financial" style="width:100%; height: 300px;; border-radius: 8px; margin-bottom: 10px;">
+                <p>Our intuitive interface makes financial management simple, even if you have no prior experience.</p>
+            </div>
+            <div class="benefit">
+                <h3>Secure</h3>
+                <img src="https://img.freepik.com/free-vector/shield_78370-582.jpg?size=338&ext=jpg&ga=GA1.1.2008272138.1727568000&semt=ais_hybrid" alt="Financial" style="width:100%; height: 300px;; border-radius: 8px; margin-bottom: 10px;">
+                <p>We use advanced security measures to ensure your financial data is protected at all times.</p>
+            </div>
+            <div class="benefit">
+                <h3>Customizable</h3>
+                <img src="https://media.istockphoto.com/id/1432903655/photo/finance-accounting-and-fintech-a-man-on-a-computer-and-calculator-working-out-his-business.jpg?s=612x612&w=0&k=20&c=dfn4cHD-wHC66j1xw0qGJKx6h2H9SKca3CNFIibIxu0=" alt="Financial" style="width:100%; height: 300px;; border-radius: 8px; margin-bottom: 10px;">
+                <p>Personalize your experience with customizable features and settings to suit your unique needs.</p>
+            </div>
+        </div>
+
+    <!-- ContactUs -->
+    <div class="contact-container" id="mycontact">
+        <h1>Contact Us</h1>
+        <p>We're here to assist you with your personal finance queries. Feel free to reach out to us using any of the methods below.</p>
+
+        <!-- Call Us -->
+        <div class="contact-option">
+            <h3>Call Us</h3>
+            <p>For immediate assistance, speak with our support team.</p>
+            <a href="tel:+919392077059">+919392077059</a>
+        </div>
+
+        <!-- Email Us -->
+        <div class="contact-option">
+            <h3>Email Us</h3>
+            <p>Have a question? Drop us an email and we'll get back to you promptly.</p>
+            <a href="thulasireddy099@outlook.com">thulasireddy099@outlook.com</a>
+        </div>
+
+        <!-- Visit Us -->
+        <div class="contact-option">
+            <h3>Visit Us</h3>
+            <p>Need personal assistance? Find a branch near you for in-person support.</p>
+            <a href="https://maps.app.goo.gl/D7Uf82NLVP6M2bHZ9">Locate Us</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Personal Finance Management. All Rights Reserved.</p>
+        <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+    </footer>
+
+</body>
+</html>
